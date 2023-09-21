@@ -8,7 +8,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_local_notifications:
-    path: ../
+    path: ./flutter_local_notifications
   flutter_timezone: ^1.0.4
   http: ^0.13.4
   image: ^3.0.8
@@ -26,9 +26,9 @@ dev_dependencies:
 # of these packages as part of CI
 dependency_overrides:
   flutter_local_notifications_linux:
-    path: ../../flutter_local_notifications_linux
+    path: ./flutter_local_notifications_linux
   flutter_local_notifications_platform_interface:
-    path: ../../flutter_local_notifications_platform_interface
+    path: ./flutter_local_notifications_platform_interface
 
 flutter:
   uses-material-design: true
