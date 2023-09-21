@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_local_notifications_linux/flutter_local_notifications_linux.dart';
-import 'package:flutter_local_notifications_platform_interface/flutter_local_notifications_platform_interface.dart';
+import 'package:local_notifications_interface/index.dart';
 import 'package:timezone/timezone.dart';
 
 import 'initialization_settings.dart';
@@ -48,7 +48,7 @@ class FlutterLocalNotificationsPlugin {
       FlutterLocalNotificationsPlugin._();
 
   /// Returns the underlying platform-specific implementation of given type [T],
-  /// which must be a concrete subclass of [FlutterLocalNotificationsPlatform](https://pub.dev/documentation/flutter_local_notifications_platform_interface/latest/flutter_local_notifications_platform_interface/FlutterLocalNotificationsPlatform-class.html)
+  /// which must be a concrete subclass of [FlutterLocalNotificationsPlatform](https://pub.dev/documentation/local_notifications_interface/latest/local_notifications_interface/FlutterLocalNotificationsPlatform-class.html)
   ///
   /// Requires running on the appropriate platform that matches the specified
   /// type for a result to be returned. For example, when the specified type

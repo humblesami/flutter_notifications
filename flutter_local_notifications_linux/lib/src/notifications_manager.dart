@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:dbus/dbus.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_local_notifications_platform_interface/flutter_local_notifications_platform_interface.dart';
+import 'package:local_notifications_interface/index.dart';
 import 'package:path/path.dart' as path;
 
 import 'dbus_wrapper.dart';

@@ -12,7 +12,7 @@ import 'package:flutter_local_notifications_linux/src/notification_info.dart'
 import 'package:flutter_local_notifications_linux/src/platform_info.dart'
     as _i4;
 import 'package:flutter_local_notifications_linux/src/storage.dart' as _i6;
-import 'package:flutter_local_notifications_platform_interface/flutter_local_notifications_platform_interface.dart'
+import 'package:local_notifications_interface/index.dart'
     as _i9;
 import 'package:mockito/mockito.dart' as _i1;
 
