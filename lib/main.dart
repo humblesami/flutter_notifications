@@ -358,721 +358,758 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  @override
-  Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
+  List<Widget> commonWidgets(){
+    final List<Widget> buttons = <Widget>[
+      const Padding(
+        padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
+        child:
+            Text('Tap on a notification when it appears to trigger'
+                ' navigation'),
+      ),
+      _InfoValueString(
+        title: 'Did notification launch app?',
+        value: widget.didNotificationLaunchApp,
+      ),
+      if (widget.didNotificationLaunchApp) ...<Widget>[
+        const Text('Launch notification details'),
+        _InfoValueString(
+            title: 'Notification id',
+            value: widget.notificationAppLaunchDetails!
+                .notificationResponse?.id),
+        _InfoValueString(
+            title: 'Action id',
+            value: widget.notificationAppLaunchDetails!
+                .notificationResponse?.actionId),
+        _InfoValueString(
+            title: 'Input',
+            value: widget.notificationAppLaunchDetails!
+                .notificationResponse?.input),
+        _InfoValueString(
+          title: 'Payload:',
+          value: widget.notificationAppLaunchDetails!
+              .notificationResponse?.payload,
         ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: Center(
+      ],
+                  
+      PaddedElevatedButton(
+        buttonText: 'Show simple notification with payload',
+        onPressed: () async {
+          await _showNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Show plain notification that has no title with '
+            'payload',
+        onPressed: () async {
+          await _showNotificationWithNoTitle();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show plain notification that has no body with '
+            'payload',
+        onPressed: () async {
+          await _showNotificationWithNoBody();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show notification with custom sound',
+        onPressed: () async {
+          await _showNotificationCustomSound();
+        },
+      ),
+    ];
+    return buttons;
+  }
+
+  List<Widget> commonWidgets2(){
+    final List<Widget> buttons = <Widget>[
+      PaddedElevatedButton(
+        buttonText:
+            'Schedule monthly Monday 10:00:00AM notification in '
+            'your local time zone',
+        onPressed: () async {
+          await _scheduleMonthlyMondayTenAMNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Schedule yearly Monday 10:00:00 am notification in '
+            'your local time zone',
+        onPressed: () async {
+          await _scheduleYearlyMondayTenAMNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show notification with no sound',
+        onPressed: () async {
+          await _showNotificationWithNoSound();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Cancel latest notification',
+        onPressed: () async {
+          await _cancelNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Cancel all notifications',
+        onPressed: () async {
+          await _cancelAllNotifications();
+        },
+      ),
+    ];
+    return buttons;
+  }
+
+  List<Widget> androidButtons(){
+    final List<Widget> buttons = <Widget>[
+      const Text(
+        'Android-specific examples',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      Text('notifications enabled: $_notificationsEnabled'),
+      PaddedElevatedButton(
+        buttonText:
+            'Check if notifications are enabled for this app',
+        onPressed: _areNotifcationsEnabledOnAndroid,
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Request permission (API 33+ android 13)',
+        onPressed: () => _requestPermissions(),
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Show plain notification with payload and update '
+            'channel description',
+        onPressed: () async {
+          await _showNotificationUpdateChannelDescription();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show plain notification as public on every '
+            'lockscreen',
+        onPressed: () async {
+          await _showPublicNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Show notification with custom vibration pattern, '
+            'red LED and red icon',
+        onPressed: () async {
+          await _showNotificationCustomVibrationIconLed();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show notification using Android Uri sound',
+        onPressed: () async {
+          await _showSoundUriNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Show notification that times out after 3 seconds',
+        onPressed: () async {
+          await _showTimeoutNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show insistent notification',
+        onPressed: () async {
+          await _showInsistentNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Show big picture notification using local images',
+        onPressed: () async {
+          await _showBigPictureNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Show big picture notification using base64 String '
+            'for images',
+        onPressed: () async {
+          await _showBigPictureNotificationBase64();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Show big picture notification using URLs for '
+            'Images',
+        onPressed: () async {
+          await _showBigPictureNotificationURL();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Show big picture notification, hide large icon '
+            'on expand',
+        onPressed: () async {
+          await _showBigPictureNotificationHiddenLargeIcon();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show media notification',
+        onPressed: () async {
+          await _showNotificationMediaStyle();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show big text notification',
+        onPressed: () async {
+          await _showBigTextNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show inbox notification',
+        onPressed: () async {
+          await _showInboxNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show messaging notification',
+        onPressed: () async {
+          await _showMessagingNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show grouped notifications',
+        onPressed: () async {
+          await _showGroupedNotifications();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show notification with tag',
+        onPressed: () async {
+          await _showNotificationWithTag();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Cancel notification with tag',
+        onPressed: () async {
+          await _cancelNotificationWithTag();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show ongoing notification',
+        onPressed: () async {
+          await _showOngoingNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Show notification with no badge, alert only once',
+        onPressed: () async {
+          await _showNotificationWithNoBadge();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Show progress notification - updates every second',
+        onPressed: () async {
+          await _showProgressNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show indeterminate progress notification',
+        onPressed: () async {
+          await _showIndeterminateProgressNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show notification without timestamp',
+        onPressed: () async {
+          await _showNotificationWithoutTimestamp();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show notification with custom timestamp',
+        onPressed: () async {
+          await _showNotificationWithCustomTimestamp();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show notification with custom sub-text',
+        onPressed: () async {
+          await _showNotificationWithCustomSubText();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show notification with chronometer',
+        onPressed: () async {
+          await _showNotificationWithChronometer();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show full-screen notification',
+        onPressed: () async {
+          await _showFullScreenNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Show notification with number if the launcher '
+            'supports',
+        onPressed: () async {
+          await _showNotificationWithNumber();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show notification with sound controlled by '
+            'alarm volume',
+        onPressed: () async {
+          await _showNotificationWithAudioAttributeAlarm();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Create grouped notification channels',
+        onPressed: () async {
+          await _createNotificationChannelGroup();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Delete notification channel group',
+        onPressed: () async {
+          await _deleteNotificationChannelGroup();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Create notification channel',
+        onPressed: () async {
+          await _createNotificationChannel();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Delete notification channel',
+        onPressed: () async {
+          await _deleteNotificationChannel();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Get notification channels',
+        onPressed: () async {
+          await _getNotificationChannels();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Start foreground service',
+        onPressed: () async {
+          await _startForegroundService();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Start foreground service with blue background '
+            'notification',
+        onPressed: () async {
+          await _startForegroundServiceWithBlueBackgroundNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Stop foreground service',
+        onPressed: () async {
+          await _stopForegroundService();
+        },
+      ),
+    ];
+    return buttons;
+  }
+
+  List<Widget> linuxButtons(){
+    final List<Widget> buttons = <Widget>[
+      const Text(
+        'Linux-specific examples',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      FutureBuilder<LinuxServerCapabilities>(
+        future: getLinuxCapabilities(),
+        builder: (
+          BuildContext context,
+          AsyncSnapshot<LinuxServerCapabilities> snapshot,
+        ) {
+          if (snapshot.hasData) {
+            final LinuxServerCapabilities caps = snapshot.data!;
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  const Padding(
-                    padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
-                    child:
-                        Text('Tap on a notification when it appears to trigger'
-                            ' navigation'),
+                  Text(
+                    'Capabilities of the current system:',
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 8),
+                  _InfoValueString(
+                    title: 'Body text:',
+                    value: caps.body,
                   ),
                   _InfoValueString(
-                    title: 'Did notification launch app?',
-                    value: widget.didNotificationLaunchApp,
+                    title: 'Hyperlinks in body text:',
+                    value: caps.bodyHyperlinks,
                   ),
-                  if (widget.didNotificationLaunchApp) ...<Widget>[
-                    const Text('Launch notification details'),
-                    _InfoValueString(
-                        title: 'Notification id',
-                        value: widget.notificationAppLaunchDetails!
-                            .notificationResponse?.id),
-                    _InfoValueString(
-                        title: 'Action id',
-                        value: widget.notificationAppLaunchDetails!
-                            .notificationResponse?.actionId),
-                    _InfoValueString(
-                        title: 'Input',
-                        value: widget.notificationAppLaunchDetails!
-                            .notificationResponse?.input),
-                    _InfoValueString(
-                      title: 'Payload:',
-                      value: widget.notificationAppLaunchDetails!
-                          .notificationResponse?.payload,
-                    ),
-                  ],
-                  PaddedElevatedButton(
-                    buttonText: 'Show plain notification with payload',
-                    onPressed: () async {
-                      await _showNotification();
-                    },
+                  _InfoValueString(
+                    title: 'Images in body:',
+                    value: caps.bodyImages,
                   ),
-                  PaddedElevatedButton(
-                    buttonText:
-                        'Show plain notification that has no title with '
-                        'payload',
-                    onPressed: () async {
-                      await _showNotificationWithNoTitle();
-                    },
+                  _InfoValueString(
+                    title: 'Markup in the body text:',
+                    value: caps.bodyMarkup,
                   ),
-                  PaddedElevatedButton(
-                    buttonText: 'Show plain notification that has no body with '
-                        'payload',
-                    onPressed: () async {
-                      await _showNotificationWithNoBody();
-                    },
+                  _InfoValueString(
+                    title: 'Animated icons:',
+                    value: caps.iconMulti,
                   ),
-                  PaddedElevatedButton(
-                    buttonText: 'Show notification with custom sound',
-                    onPressed: () async {
-                      await _showNotificationCustomSound();
-                    },
+                  _InfoValueString(
+                    title: 'Static icons:',
+                    value: caps.iconStatic,
                   ),
-                  if (kIsWeb || !Platform.isLinux) ...<Widget>[
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Schedule notification to appear in 5 seconds '
-                          'based on local time zone',
-                      onPressed: () async {
-                        await _zonedScheduleNotification();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Schedule notification to appear in 5 seconds '
-                          'based on local time zone using alarm clock',
-                      onPressed: () async {
-                        await _zonedScheduleAlarmClockNotification();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Repeat notification every minute',
-                      onPressed: () async {
-                        await _repeatNotification();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Schedule daily 10:00:00 am notification in your '
-                          'local time zone',
-                      onPressed: () async {
-                        await _scheduleDailyTenAMNotification();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Schedule daily 10:00:00 am notification in your '
-                          "local time zone using last year's date",
-                      onPressed: () async {
-                        await _scheduleDailyTenAMLastYearNotification();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Schedule weekly 10:00:00 am notification in your '
-                          'local time zone',
-                      onPressed: () async {
-                        await _scheduleWeeklyTenAMNotification();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Schedule weekly Monday 10:00:00 am notification '
-                          'in your local time zone',
-                      onPressed: () async {
-                        await _scheduleWeeklyMondayTenAMNotification();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Check pending notifications',
-                      onPressed: () async {
-                        await _checkPendingNotificationRequests();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Get active notifications',
-                      onPressed: () async {
-                        await _getActiveNotifications();
-                      },
-                    ),
-                  ],
-                  PaddedElevatedButton(
-                    buttonText:
-                        'Schedule monthly Monday 10:00:00 am notification in '
-                        'your local time zone',
-                    onPressed: () async {
-                      await _scheduleMonthlyMondayTenAMNotification();
-                    },
+                  _InfoValueString(
+                    title: 'Notification persistence:',
+                    value: caps.persistence,
                   ),
-                  PaddedElevatedButton(
-                    buttonText:
-                        'Schedule yearly Monday 10:00:00 am notification in '
-                        'your local time zone',
-                    onPressed: () async {
-                      await _scheduleYearlyMondayTenAMNotification();
-                    },
+                  _InfoValueString(
+                    title: 'Sound:',
+                    value: caps.sound,
                   ),
-                  PaddedElevatedButton(
-                    buttonText: 'Show notification with no sound',
-                    onPressed: () async {
-                      await _showNotificationWithNoSound();
-                    },
+                  _InfoValueString(
+                    title: 'Actions:',
+                    value: caps.actions,
                   ),
-                  PaddedElevatedButton(
-                    buttonText: 'Cancel latest notification',
-                    onPressed: () async {
-                      await _cancelNotification();
-                    },
+                  _InfoValueString(
+                    title: 'Action icons:',
+                    value: caps.actionIcons,
                   ),
-                  PaddedElevatedButton(
-                    buttonText: 'Cancel all notifications',
-                    onPressed: () async {
-                      await _cancelAllNotifications();
-                    },
+                  _InfoValueString(
+                    title: 'Other capabilities:',
+                    value: caps.otherCapabilities,
                   ),
-                  const Divider(),
-                  const Text(
-                    'Notifications with actions',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  PaddedElevatedButton(
-                    buttonText: 'Show notification with plain actions',
-                    onPressed: () async {
-                      await _showNotificationWithActions();
-                    },
-                  ),
-                  if (Platform.isLinux)
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Show notification with icon action (if supported)',
-                      onPressed: () async {
-                        await _showNotificationWithIconAction();
-                      },
-                    ),
-                  if (!Platform.isLinux)
-                    PaddedElevatedButton(
-                      buttonText: 'Show notification with text action',
-                      onPressed: () async {
-                        await _showNotificationWithTextAction();
-                      },
-                    ),
-                  if (!Platform.isLinux)
-                    PaddedElevatedButton(
-                      buttonText: 'Show notification with text choice',
-                      onPressed: () async {
-                        await _showNotificationWithTextChoice();
-                      },
-                    ),
-                  const Divider(),
-                  if (Platform.isAndroid) ...<Widget>[
-                    const Text(
-                      'Android-specific examples',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Text('notifications enabled: $_notificationsEnabled'),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Check if notifications are enabled for this app',
-                      onPressed: _areNotifcationsEnabledOnAndroid,
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Request permission (API 33+)',
-                      onPressed: () => _requestPermissions(),
-                    ),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Show plain notification with payload and update '
-                          'channel description',
-                      onPressed: () async {
-                        await _showNotificationUpdateChannelDescription();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show plain notification as public on every '
-                          'lockscreen',
-                      onPressed: () async {
-                        await _showPublicNotification();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Show notification with custom vibration pattern, '
-                          'red LED and red icon',
-                      onPressed: () async {
-                        await _showNotificationCustomVibrationIconLed();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show notification using Android Uri sound',
-                      onPressed: () async {
-                        await _showSoundUriNotification();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Show notification that times out after 3 seconds',
-                      onPressed: () async {
-                        await _showTimeoutNotification();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show insistent notification',
-                      onPressed: () async {
-                        await _showInsistentNotification();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Show big picture notification using local images',
-                      onPressed: () async {
-                        await _showBigPictureNotification();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Show big picture notification using base64 String '
-                          'for images',
-                      onPressed: () async {
-                        await _showBigPictureNotificationBase64();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Show big picture notification using URLs for '
-                          'Images',
-                      onPressed: () async {
-                        await _showBigPictureNotificationURL();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Show big picture notification, hide large icon '
-                          'on expand',
-                      onPressed: () async {
-                        await _showBigPictureNotificationHiddenLargeIcon();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show media notification',
-                      onPressed: () async {
-                        await _showNotificationMediaStyle();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show big text notification',
-                      onPressed: () async {
-                        await _showBigTextNotification();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show inbox notification',
-                      onPressed: () async {
-                        await _showInboxNotification();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show messaging notification',
-                      onPressed: () async {
-                        await _showMessagingNotification();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show grouped notifications',
-                      onPressed: () async {
-                        await _showGroupedNotifications();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show notification with tag',
-                      onPressed: () async {
-                        await _showNotificationWithTag();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Cancel notification with tag',
-                      onPressed: () async {
-                        await _cancelNotificationWithTag();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show ongoing notification',
-                      onPressed: () async {
-                        await _showOngoingNotification();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Show notification with no badge, alert only once',
-                      onPressed: () async {
-                        await _showNotificationWithNoBadge();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Show progress notification - updates every second',
-                      onPressed: () async {
-                        await _showProgressNotification();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show indeterminate progress notification',
-                      onPressed: () async {
-                        await _showIndeterminateProgressNotification();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show notification without timestamp',
-                      onPressed: () async {
-                        await _showNotificationWithoutTimestamp();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show notification with custom timestamp',
-                      onPressed: () async {
-                        await _showNotificationWithCustomTimestamp();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show notification with custom sub-text',
-                      onPressed: () async {
-                        await _showNotificationWithCustomSubText();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show notification with chronometer',
-                      onPressed: () async {
-                        await _showNotificationWithChronometer();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show full-screen notification',
-                      onPressed: () async {
-                        await _showFullScreenNotification();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Show notification with number if the launcher '
-                          'supports',
-                      onPressed: () async {
-                        await _showNotificationWithNumber();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show notification with sound controlled by '
-                          'alarm volume',
-                      onPressed: () async {
-                        await _showNotificationWithAudioAttributeAlarm();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Create grouped notification channels',
-                      onPressed: () async {
-                        await _createNotificationChannelGroup();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Delete notification channel group',
-                      onPressed: () async {
-                        await _deleteNotificationChannelGroup();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Create notification channel',
-                      onPressed: () async {
-                        await _createNotificationChannel();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Delete notification channel',
-                      onPressed: () async {
-                        await _deleteNotificationChannel();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Get notification channels',
-                      onPressed: () async {
-                        await _getNotificationChannels();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Start foreground service',
-                      onPressed: () async {
-                        await _startForegroundService();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Start foreground service with blue background '
-                          'notification',
-                      onPressed: () async {
-                        await _startForegroundServiceWithBlueBackgroundNotification();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Stop foreground service',
-                      onPressed: () async {
-                        await _stopForegroundService();
-                      },
-                    ),
-                  ],
-                  if (!kIsWeb &&
-                      (Platform.isIOS || Platform.isMacOS)) ...<Widget>[
-                    const Text(
-                      'iOS and macOS-specific examples',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Request permission',
-                      onPressed: _requestPermissions,
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show notification with subtitle',
-                      onPressed: () async {
-                        await _showNotificationWithSubtitle();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show notification with icon badge',
-                      onPressed: () async {
-                        await _showNotificationWithIconBadge();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Show notification with attachment (with thumbnail)',
-                      onPressed: () async {
-                        await _showNotificationWithAttachment(
-                            hideThumbnail: false);
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Show notification with attachment (no thumbnail)',
-                      onPressed: () async {
-                        await _showNotificationWithAttachment(
-                            hideThumbnail: true);
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Show notification with attachment (clipped thumbnail)',
-                      onPressed: () async {
-                        await _showNotificationWithClippedThumbnailAttachment();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show notifications with thread identifier',
-                      onPressed: () async {
-                        await _showNotificationsWithThreadIdentifier();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Show notification with time sensitive interruption '
-                          'level',
-                      onPressed: () async {
-                        await _showNotificationWithTimeSensitiveInterruptionLevel();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show notification with banner but not in '
-                          'notification centre',
-                      onPressed: () async {
-                        await _showNotificationWithBannerNotInNotificationCentre();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Show notification in notification centre only',
-                      onPressed: () async {
-                        await _showNotificationInNotificationCentreOnly();
-                      },
-                    ),
-                  ],
-                  if (!kIsWeb && Platform.isLinux) ...<Widget>[
-                    const Text(
-                      'Linux-specific examples',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    FutureBuilder<LinuxServerCapabilities>(
-                      future: getLinuxCapabilities(),
-                      builder: (
-                        BuildContext context,
-                        AsyncSnapshot<LinuxServerCapabilities> snapshot,
-                      ) {
-                        if (snapshot.hasData) {
-                          final LinuxServerCapabilities caps = snapshot.data!;
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  'Capabilities of the current system:',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleMedium!
-                                      .copyWith(fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 8),
-                                _InfoValueString(
-                                  title: 'Body text:',
-                                  value: caps.body,
-                                ),
-                                _InfoValueString(
-                                  title: 'Hyperlinks in body text:',
-                                  value: caps.bodyHyperlinks,
-                                ),
-                                _InfoValueString(
-                                  title: 'Images in body:',
-                                  value: caps.bodyImages,
-                                ),
-                                _InfoValueString(
-                                  title: 'Markup in the body text:',
-                                  value: caps.bodyMarkup,
-                                ),
-                                _InfoValueString(
-                                  title: 'Animated icons:',
-                                  value: caps.iconMulti,
-                                ),
-                                _InfoValueString(
-                                  title: 'Static icons:',
-                                  value: caps.iconStatic,
-                                ),
-                                _InfoValueString(
-                                  title: 'Notification persistence:',
-                                  value: caps.persistence,
-                                ),
-                                _InfoValueString(
-                                  title: 'Sound:',
-                                  value: caps.sound,
-                                ),
-                                _InfoValueString(
-                                  title: 'Actions:',
-                                  value: caps.actions,
-                                ),
-                                _InfoValueString(
-                                  title: 'Action icons:',
-                                  value: caps.actionIcons,
-                                ),
-                                _InfoValueString(
-                                  title: 'Other capabilities:',
-                                  value: caps.otherCapabilities,
-                                ),
-                              ],
-                            ),
-                          );
-                        } else {
-                          return const CircularProgressIndicator();
-                        }
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show notification with body markup',
-                      onPressed: () async {
-                        await _showLinuxNotificationWithBodyMarkup();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show notification with category',
-                      onPressed: () async {
-                        await _showLinuxNotificationWithCategory();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show notification with byte data icon',
-                      onPressed: () async {
-                        await _showLinuxNotificationWithByteDataIcon();
-                      },
-                    ),
-                    Builder(
-                      builder: (BuildContext context) => PaddedElevatedButton(
-                        buttonText: 'Show notification with file path icon',
-                        onPressed: () async {
-                          final String path = _linuxIconPathController.text;
-                          if (path.isEmpty) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('Please enter the icon path'),
-                              ),
-                            );
-                            return;
-                          }
-                          await _showLinuxNotificationWithPathIcon(path);
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-                      child: TextField(
-                        controller: _linuxIconPathController,
-                        decoration: InputDecoration(
-                          hintText: 'Enter the icon path',
-                          constraints: const BoxConstraints.tightFor(
-                            width: 300,
-                          ),
-                          suffixIcon: IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () => _linuxIconPathController.clear(),
-                          ),
-                        ),
-                      ),
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show notification with theme icon',
-                      onPressed: () async {
-                        await _showLinuxNotificationWithThemeIcon();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show notification with theme sound',
-                      onPressed: () async {
-                        await _showLinuxNotificationWithThemeSound();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show notification with critical urgency',
-                      onPressed: () async {
-                        await _showLinuxNotificationWithCriticalUrgency();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show notification with timeout',
-                      onPressed: () async {
-                        await _showLinuxNotificationWithTimeout();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Suppress notification sound',
-                      onPressed: () async {
-                        await _showLinuxNotificationSuppressSound();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Transient notification',
-                      onPressed: () async {
-                        await _showLinuxNotificationTransient();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Resident notification',
-                      onPressed: () async {
-                        await _showLinuxNotificationResident();
-                      },
-                    ),
-                    PaddedElevatedButton(
-                      buttonText: 'Show notification on '
-                          'different screen location',
-                      onPressed: () async {
-                        await _showLinuxNotificationDifferentLocation();
-                      },
-                    ),
-                  ],
                 ],
               ),
+            );
+          } else {
+            return const CircularProgressIndicator();
+          }
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show notification with body markup',
+        onPressed: () async {
+          await _showLinuxNotificationWithBodyMarkup();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show notification with category',
+        onPressed: () async {
+          await _showLinuxNotificationWithCategory();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show notification with byte data icon',
+        onPressed: () async {
+          await _showLinuxNotificationWithByteDataIcon();
+        },
+      ),
+      Builder(
+        builder: (BuildContext context) => PaddedElevatedButton(
+          buttonText: 'Show notification with file path icon',
+          onPressed: () async {
+            final String path = _linuxIconPathController.text;
+            if (path.isEmpty) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Please enter the icon path'),
+                ),
+              );
+              return;
+            }
+            await _showLinuxNotificationWithPathIcon(path);
+          },
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+        child: TextField(
+          controller: _linuxIconPathController,
+          decoration: InputDecoration(
+            hintText: 'Enter the icon path',
+            constraints: const BoxConstraints.tightFor(
+              width: 300,
+            ),
+            suffixIcon: IconButton(
+              icon: const Icon(Icons.clear),
+              onPressed: () => _linuxIconPathController.clear(),
             ),
           ),
         ),
-      );
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show notification with theme icon',
+        onPressed: () async {
+          await _showLinuxNotificationWithThemeIcon();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show notification with theme sound',
+        onPressed: () async {
+          await _showLinuxNotificationWithThemeSound();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show notification with critical urgency',
+        onPressed: () async {
+          await _showLinuxNotificationWithCriticalUrgency();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show notification with timeout',
+        onPressed: () async {
+          await _showLinuxNotificationWithTimeout();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Suppress notification sound',
+        onPressed: () async {
+          await _showLinuxNotificationSuppressSound();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Transient notification',
+        onPressed: () async {
+          await _showLinuxNotificationTransient();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Resident notification',
+        onPressed: () async {
+          await _showLinuxNotificationResident();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show notification on '
+            'different screen location',
+        onPressed: () async {
+          await _showLinuxNotificationDifferentLocation();
+        },
+      ),
+    ];
+    return buttons;
+  }
+  
+  List<Widget> iosButtons(){
+    final List<Widget> buttons = <Widget>[
+      PaddedElevatedButton(
+        buttonText: 'Request permission',
+        onPressed: _requestPermissions,
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show notification with subtitle',
+        onPressed: () async {
+          await _showNotificationWithSubtitle();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show notification with icon badge',
+        onPressed: () async {
+          await _showNotificationWithIconBadge();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Show notification with attachment (with thumbnail)',
+        onPressed: () async {
+          await _showNotificationWithAttachment(
+              hideThumbnail: false);
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Show notification with attachment (no thumbnail)',
+        onPressed: () async {
+          await _showNotificationWithAttachment(
+              hideThumbnail: true);
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Show notification with attachment (clipped thumbnail)',
+        onPressed: () async {
+          await _showNotificationWithClippedThumbnailAttachment();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show notifications with thread identifier',
+        onPressed: () async {
+          await _showNotificationsWithThreadIdentifier();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Show notification with time sensitive interruption '
+            'level',
+        onPressed: () async {
+          await _showNotificationWithTimeSensitiveInterruptionLevel();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Show notification with banner but not in '
+            'notification centre',
+        onPressed: () async {
+          await _showNotificationWithBannerNotInNotificationCentre();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Show notification in notification centre only',
+        onPressed: () async {
+          await _showNotificationInNotificationCentreOnly();
+        },
+      ),
+    ];
+    return buttons;
+  }
+  
+  List<Widget> nonLinuxButtons(){
+    final List<Widget> list = <Widget>[
+      PaddedElevatedButton(
+        buttonText:
+            'Schedule notification to appear in 5 seconds '
+            'based on local time zone',
+        onPressed: () async {
+          await _zonedScheduleNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Schedule notification to appear in 5 seconds '
+            'based on local time zone using alarm clock',
+        onPressed: () async {
+          await _zonedScheduleAlarmClockNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Repeat notification every minute',
+        onPressed: () async {
+          await _repeatNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Schedule daily 10:00:00 am notification in your '
+            'local time zone',
+        onPressed: () async {
+          await _scheduleDailyTenAMNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Schedule daily 10:00:00 am notification in your '
+            "local time zone using last year's date",
+        onPressed: () async {
+          await _scheduleDailyTenAMLastYearNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Schedule weekly 10:00:00 am notification in your '
+            'local time zone',
+        onPressed: () async {
+          await _scheduleWeeklyTenAMNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText:
+            'Schedule weekly Monday 10:00:00 am notification '
+            'in your local time zone',
+        onPressed: () async {
+          await _scheduleWeeklyMondayTenAMNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Check pending notifications',
+        onPressed: () async {
+          await _checkPendingNotificationRequests();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Get active notifications',
+        onPressed: () async {
+          await _getActiveNotifications();
+        },
+      ),
+    ];
+    return list;
+  }
+
+  @override
+  Widget build(BuildContext context) => Scaffold(
+    appBar: AppBar(
+      title: const Text('Plugin example app'),
+    ),
+    body: SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              ...commonWidgets(),
+              if (kIsWeb || !Platform.isLinux) ...nonLinuxButtons(),
+              ...commonWidgets2(),
+              const Divider(),
+              const Text(
+                'Notifications with actions',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              PaddedElevatedButton(
+                buttonText: 'Show notification with plain actions',
+                onPressed: () async {
+                  await _showNotificationWithActions();
+                },
+              ),
+              if (Platform.isLinux)
+                PaddedElevatedButton(
+                  buttonText:
+                      'Show notification with icon action (if supported)',
+                  onPressed: () async {
+                    await _showNotificationWithIconAction();
+                  },
+                ),
+              
+              if (!Platform.isLinux)
+                PaddedElevatedButton(
+                  buttonText: 'Show notification with text action',
+                  onPressed: () async {
+                    await _showNotificationWithTextAction();
+                  },
+                ),
+                PaddedElevatedButton(
+                  buttonText: 'Show notification with text choice',
+                  onPressed: () async {
+                    await _showNotificationWithTextChoice();
+                  },
+                ),
+              const Divider(),
+              if (Platform.isAndroid) ...androidButtons(),
+              if (!kIsWeb &&
+                  (Platform.isIOS || Platform.isMacOS)) ...<Widget>[
+                const Text(
+                  'iOS and macOS-specific examples',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                ...iosButtons()
+              ],
+              if (!kIsWeb && Platform.isLinux) ...linuxButtons(),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 
   Future<void> _showNotification() async {
     const AndroidNotificationDetails androidNotificationDetails =
