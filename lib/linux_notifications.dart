@@ -5,11 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:image/image.dart' as image;
 
-int id = 0;
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
 
-Future<void> doShowLinuxNotificationWithBodyMarkup() async {
+Future<int> doShowLinuxNotificationWithBodyMarkup(int id) async {
   await flutterLocalNotificationsPlugin.show(
     id++,
     'notification with body markup',
@@ -20,9 +19,10 @@ Future<void> doShowLinuxNotificationWithBodyMarkup() async {
         '<a href="https://example.com">example.com</a>',
     null,
   );
+  return id;
 }
 
-Future<void> doShowLinuxNotificationWithCategory() async {
+Future<int> doShowLinuxNotificationWithCategory(int id) async {
   const LinuxNotificationDetails linuxPlatformChannelSpecifics =
       LinuxNotificationDetails(
     category: LinuxNotificationCategory.emailArrived,
@@ -36,9 +36,10 @@ Future<void> doShowLinuxNotificationWithCategory() async {
     null,
     notificationDetails,
   );
+  return id;
 }
 
-Future<void> doShowLinuxNotificationWithByteDataIcon() async {
+Future<int> doShowLinuxNotificationWithByteDataIcon(int id) async {
   final ByteData assetIcon = await rootBundle.load(
     'icons/app_icon_density.png',
   );
@@ -67,9 +68,10 @@ Future<void> doShowLinuxNotificationWithByteDataIcon() async {
     null,
     notificationDetails,
   );
+  return id;
 }
 
-Future<void> doShowLinuxNotificationWithPathIcon(String path) async {
+Future<int> doShowLinuxNotificationWithPathIcon(String path, int id) async {
   final LinuxNotificationDetails linuxPlatformChannelSpecifics =
       LinuxNotificationDetails(icon: FilePathLinuxIcon(path));
   final NotificationDetails platformChannelSpecifics = NotificationDetails(
@@ -81,9 +83,10 @@ Future<void> doShowLinuxNotificationWithPathIcon(String path) async {
     null,
     platformChannelSpecifics,
   );
+  return id;
 }
 
-Future<void> doShowLinuxNotificationWithThemeIcon() async {
+Future<int> doShowLinuxNotificationWithThemeIcon(int id) async {
   final LinuxNotificationDetails linuxPlatformChannelSpecifics =
       LinuxNotificationDetails(
     icon: ThemeLinuxIcon('media-eject'),
@@ -97,9 +100,10 @@ Future<void> doShowLinuxNotificationWithThemeIcon() async {
     null,
     notificationDetails,
   );
+  return id;
 }
 
-Future<void> doShowLinuxNotificationWithThemeSound() async {
+Future<int> doShowLinuxNotificationWithThemeSound(int id) async {
   final LinuxNotificationDetails linuxPlatformChannelSpecifics =
       LinuxNotificationDetails(
     sound: ThemeLinuxSound('message-new-email'),
@@ -113,9 +117,10 @@ Future<void> doShowLinuxNotificationWithThemeSound() async {
     null,
     notificationDetails,
   );
+  return id;
 }
 
-Future<void> doShowLinuxNotificationWithCriticalUrgency() async {
+Future<int> doShowLinuxNotificationWithCriticalUrgency(int id) async {
   const LinuxNotificationDetails linuxPlatformChannelSpecifics =
       LinuxNotificationDetails(
     urgency: LinuxNotificationUrgency.critical,
@@ -129,9 +134,10 @@ Future<void> doShowLinuxNotificationWithCriticalUrgency() async {
     null,
     notificationDetails,
   );
+  return id;
 }
 
-Future<void> doShowLinuxNotificationWithTimeout() async {
+Future<int> doShowLinuxNotificationWithTimeout(int id) async {
   final LinuxNotificationDetails linuxPlatformChannelSpecifics =
       LinuxNotificationDetails(
     timeout: LinuxNotificationTimeout.fromDuration(
@@ -147,9 +153,10 @@ Future<void> doShowLinuxNotificationWithTimeout() async {
     null,
     notificationDetails,
   );
+  return id;
 }
 
-Future<void> doShowLinuxNotificationSuppressSound() async {
+Future<int> doShowLinuxNotificationSuppressSound(int id) async {
   const LinuxNotificationDetails linuxPlatformChannelSpecifics =
       LinuxNotificationDetails(
     suppressSound: true,
@@ -163,9 +170,10 @@ Future<void> doShowLinuxNotificationSuppressSound() async {
     null,
     notificationDetails,
   );
+  return id;
 }
 
-Future<void> doShowLinuxNotificationTransient() async {
+Future<int> doShowLinuxNotificationTransient(int id) async {
   const LinuxNotificationDetails linuxPlatformChannelSpecifics =
       LinuxNotificationDetails(
     transient: true,
@@ -179,9 +187,10 @@ Future<void> doShowLinuxNotificationTransient() async {
     null,
     notificationDetails,
   );
+  return id;
 }
 
-Future<void> doShowLinuxNotificationResident() async {
+Future<int> doShowLinuxNotificationResident(int id) async {
   const LinuxNotificationDetails linuxPlatformChannelSpecifics =
       LinuxNotificationDetails(
     resident: true,
@@ -195,9 +204,10 @@ Future<void> doShowLinuxNotificationResident() async {
     null,
     notificationDetails,
   );
+  return id;
 }
 
-Future<void> doShowLinuxNotificationDifferentLocation() async {
+Future<int> doShowLinuxNotificationDifferentLocation(int id) async {
   const LinuxNotificationDetails linuxPlatformChannelSpecifics =
       LinuxNotificationDetails(location: LinuxNotificationLocation(10, 10));
   const NotificationDetails notificationDetails = NotificationDetails(
@@ -209,5 +219,6 @@ Future<void> doShowLinuxNotificationDifferentLocation() async {
     null,
     notificationDetails,
   );
+  return id;
 }
 

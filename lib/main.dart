@@ -15,8 +15,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-import 'linux_notifications.dart';
 import 'info_value_string.dart';
+import 'linux_notifications.dart';
 
 
 
@@ -803,19 +803,19 @@ class _HomePageState extends State<HomePage> {
       PaddedElevatedButton(
         buttonText: 'Show notification with body markup',
         onPressed: () async {
-          await doShowLinuxNotificationWithBodyMarkup();
+          id = await doShowLinuxNotificationWithBodyMarkup(id);
         },
       ),
       PaddedElevatedButton(
         buttonText: 'Show notification with category',
         onPressed: () async {
-          await doShowLinuxNotificationWithCategory();
+          id = await doShowLinuxNotificationWithCategory(id);
         },
       ),
       PaddedElevatedButton(
         buttonText: 'Show notification with byte data icon',
         onPressed: () async {
-          await doShowLinuxNotificationWithByteDataIcon();
+          id = await doShowLinuxNotificationWithByteDataIcon(id);
         },
       ),
       Builder(
@@ -831,7 +831,7 @@ class _HomePageState extends State<HomePage> {
               );
               return;
             }
-            await doShowLinuxNotificationWithPathIcon(path);
+            id = await doShowLinuxNotificationWithPathIcon(path, id);
           },
         ),
       ),
@@ -854,50 +854,50 @@ class _HomePageState extends State<HomePage> {
       PaddedElevatedButton(
         buttonText: 'Show notification with theme icon',
         onPressed: () async {
-          await doShowLinuxNotificationWithThemeIcon();
+          id = await doShowLinuxNotificationWithThemeIcon(id);
         },
       ),
       PaddedElevatedButton(
         buttonText: 'Show notification with theme sound',
         onPressed: () async {
-          await doShowLinuxNotificationWithThemeSound();
+          id = await doShowLinuxNotificationWithThemeSound(id);
         },
       ),
       PaddedElevatedButton(
         buttonText: 'Show notification with critical urgency',
         onPressed: () async {
-          await doShowLinuxNotificationWithCriticalUrgency();
+          id = await doShowLinuxNotificationWithCriticalUrgency(id);
         },
       ),
       PaddedElevatedButton(
         buttonText: 'Show notification with timeout',
         onPressed: () async {
-          await doShowLinuxNotificationWithTimeout();
+          id = await doShowLinuxNotificationWithTimeout(id);
         },
       ),
       PaddedElevatedButton(
         buttonText: 'Suppress notification sound',
         onPressed: () async {
-          await doShowLinuxNotificationSuppressSound();
+          id = await doShowLinuxNotificationSuppressSound(id);
         },
       ),
       PaddedElevatedButton(
         buttonText: 'Transient notification',
         onPressed: () async {
-          await doShowLinuxNotificationTransient();
+          id = await doShowLinuxNotificationTransient(id);
         },
       ),
       PaddedElevatedButton(
         buttonText: 'Resident notification',
         onPressed: () async {
-          await doShowLinuxNotificationResident();
+          id = await doShowLinuxNotificationResident(id);
         },
       ),
       PaddedElevatedButton(
         buttonText: 'Show notification on '
             'different screen location',
         onPressed: () async {
-          await doShowLinuxNotificationDifferentLocation();
+          id = await doShowLinuxNotificationDifferentLocation(id);
         },
       ),
     ];
