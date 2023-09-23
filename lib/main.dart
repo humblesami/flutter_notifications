@@ -214,14 +214,9 @@ class HomePage extends StatefulWidget {
     this.notificationAppLaunchDetails, {
     Key? key,
   }) : super(key: key);
-
   static const String routeName = '/';
-
   final NotificationAppLaunchDetails? notificationAppLaunchDetails;
-
-  bool get didNotificationLaunchApp =>
-      notificationAppLaunchDetails?.didNotificationLaunchApp ?? false;
-
+  bool get didNotificationLaunchApp => notificationAppLaunchDetails?.didNotificationLaunchApp ?? false;
   @override
   _HomePageState createState() => _HomePageState();
 }
@@ -334,47 +329,47 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8),
-            child: Center(
-              child: Column(
-                children: <Widget>[
-                  ...commonWidgets(),
-                  if (kIsWeb || !Platform.isLinux) ...nonLinuxButtons(),
-                  ...commonWidget1(),
-                  const Divider(),
-                  const Text(
-                    'Notifications with actions',
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  if (Platform.isLinux)
-                    PaddedElevatedButton(
-                      buttonText:
-                          'Show notification with icon action (if supported)',
-                      onPressed: () async {
-                        await _showNotificationWithIconAction();
-                      },
-                    ),
-                  const Divider(),
-                  if (Platform.isAndroid) ...androidButtons(),
-                  if (!kIsWeb &&
-                      (Platform.isIOS || Platform.isMacOS)) ...<Widget>[
-                    const Text(
-                      'iOS and macOS-specific examples',
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ],
-                  if (!kIsWeb && Platform.isLinux) ...linuxButtons(),
-                ],
+    appBar: AppBar(
+      title: const Text('Plugin example app'),
+    ),
+    body: SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Center(
+          child: Column(
+            children: <Widget>[
+              ...commonWidgets(),
+              if (kIsWeb || !Platform.isLinux) ...nonLinuxButtons(),
+              ...commonWidget1(),
+              const Divider(),
+              const Text(
+                'Notifications with actions',
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
-            ),
+              if (Platform.isLinux)
+                PaddedElevatedButton(
+                  buttonText:
+                      'Show notification with icon action (if supported)',
+                  onPressed: () async {
+                    await _showNotificationWithIconAction();
+                  },
+                ),
+              const Divider(),
+              if (Platform.isAndroid) ...androidButtons(),
+              if (!kIsWeb &&
+                  (Platform.isIOS || Platform.isMacOS)) ...<Widget>[
+                const Text(
+                  'iOS and macOS-specific examples',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ],
+              if (!kIsWeb && Platform.isLinux) ...linuxButtons(),
+            ],
           ),
         ),
-      );
+      ),
+    ),
+  );
 
   List<Widget> commonWidgets() {
     final List<Widget> buttons = <Widget>[
@@ -606,6 +601,13 @@ class _HomePageState extends State<HomePage> {
         buttonText: 'Repeat notification every minute',
         onPressed: () async {
           await _repeatNotification();
+        },
+      ),
+      PaddedElevatedButton(
+        buttonText: 'Schedule in 5 seconds '
+            'local time zone',
+        onPressed: () async {
+          await _zonedScheduleNotification();
         },
       ),
       PaddedElevatedButton(
@@ -1006,6 +1008,25 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Future<void> _zonedScheduleNotification() async {
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      0,
+      'scheduled title',
+      'scheduled body',
+      tz.TZDateTime.now(tz.local).add(const Duration(seconds: 5)),
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'your channel id', 'your channel name',
+          sound: RawResourceAndroidNotificationSound('s4'),
+          channelDescription: 'your channel description',
+        )
+      ),
+      androidAllowWhileIdle: true,
+      // androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+      uiLocalNotificationDateInterpretation: UILocalNotificationDateInterpretation.absoluteTime
+    );
+  }
+
   Future<void> _scheduleDailyTenAMNotification() async {
     await flutterLocalNotificationsPlugin.zonedSchedule(
         0,
@@ -1064,13 +1085,13 @@ class _HomePageState extends State<HomePage> {
       'your other channel id',
       'your other channel name',
       channelDescription: 'your other channel description',
-      sound: RawResourceAndroidNotificationSound('slow_spring_board'),
+      sound: RawResourceAndroidNotificationSound('s4'),
     );
     const DarwinNotificationDetails darwinNotificationDetails = DarwinNotificationDetails(
       sound: 'slow_spring_board.aiff',
     );
     final LinuxNotificationDetails linuxPlatformChannelSpecifics = LinuxNotificationDetails(
-      sound: AssetsLinuxSound('sound/slow_spring_board.mp3'),
+      sound: AssetsLinuxSound('sound/s4.mp3'),
     );
     final NotificationDetails notificationDetails = NotificationDetails(
       android: androidNotificationDetails,
