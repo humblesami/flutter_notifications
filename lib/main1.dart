@@ -18,8 +18,6 @@ import 'package:timezone/timezone.dart' as tz;
 import 'info_value_string.dart';
 import 'linux_notifications.dart';
 
-
-
 int id = 0;
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -361,13 +359,12 @@ class _HomePageState extends State<HomePage> {
     super.dispose();
   }
 
-  List<Widget> commonWidgets(){
+  List<Widget> commonWidgets() {
     final List<Widget> buttons = <Widget>[
       const Padding(
         padding: EdgeInsets.fromLTRB(0, 0, 0, 8),
-        child:
-            Text('Tap on a notification when it appears to trigger'
-                ' navigation'),
+        child: Text('Tap on a notification when it appears to trigger'
+            ' navigation'),
       ),
       InfoValueString(
         title: 'Did notification launch app?',
@@ -377,23 +374,22 @@ class _HomePageState extends State<HomePage> {
         const Text('Launch notification details'),
         InfoValueString(
             title: 'Notification id',
-            value: widget.notificationAppLaunchDetails!
-                .notificationResponse?.id),
+            value:
+                widget.notificationAppLaunchDetails!.notificationResponse?.id),
         InfoValueString(
             title: 'Action id',
-            value: widget.notificationAppLaunchDetails!
-                .notificationResponse?.actionId),
+            value: widget
+                .notificationAppLaunchDetails!.notificationResponse?.actionId),
         InfoValueString(
             title: 'Input',
-            value: widget.notificationAppLaunchDetails!
-                .notificationResponse?.input),
+            value: widget
+                .notificationAppLaunchDetails!.notificationResponse?.input),
         InfoValueString(
           title: 'Payload:',
-          value: widget.notificationAppLaunchDetails!
-              .notificationResponse?.payload,
+          value: widget
+              .notificationAppLaunchDetails!.notificationResponse?.payload,
         ),
       ],
-                  
       PaddedElevatedButton(
         buttonText: 'Show simple notification with payload',
         onPressed: () async {
@@ -401,8 +397,7 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Show plain notification that has no title with '
+        buttonText: 'Show plain notification that has no title with '
             'payload',
         onPressed: () async {
           await _showNotificationWithNoTitle();
@@ -425,19 +420,17 @@ class _HomePageState extends State<HomePage> {
     return buttons;
   }
 
-  List<Widget> commonWidgets2(){
+  List<Widget> commonWidgets2() {
     final List<Widget> buttons = <Widget>[
       PaddedElevatedButton(
-        buttonText:
-            'Schedule monthly Monday 10:00:00AM notification in '
+        buttonText: 'Schedule monthly Monday 10:00:00AM notification in '
             'your local time zone',
         onPressed: () async {
           await _scheduleMonthlyMondayTenAMNotification();
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Schedule yearly Monday 10:00:00 am notification in '
+        buttonText: 'Schedule yearly Monday 10:00:00 am notification in '
             'your local time zone',
         onPressed: () async {
           await _scheduleYearlyMondayTenAMNotification();
@@ -465,7 +458,7 @@ class _HomePageState extends State<HomePage> {
     return buttons;
   }
 
-  List<Widget> androidButtons(){
+  List<Widget> androidButtons() {
     final List<Widget> buttons = <Widget>[
       const Text(
         'Android-specific examples',
@@ -473,8 +466,7 @@ class _HomePageState extends State<HomePage> {
       ),
       Text('notifications enabled: $_notificationsEnabled'),
       PaddedElevatedButton(
-        buttonText:
-            'Check if notifications are enabled for this app',
+        buttonText: 'Check if notifications are enabled for this app',
         onPressed: _areNotifcationsEnabledOnAndroid,
       ),
       PaddedElevatedButton(
@@ -482,8 +474,7 @@ class _HomePageState extends State<HomePage> {
         onPressed: () => _requestPermissions(),
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Show plain notification with payload and update '
+        buttonText: 'Show plain notification with payload and update '
             'channel description',
         onPressed: () async {
           await _showNotificationUpdateChannelDescription();
@@ -497,8 +488,7 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Show notification with custom vibration pattern, '
+        buttonText: 'Show notification with custom vibration pattern, '
             'red LED and red icon',
         onPressed: () async {
           await _showNotificationCustomVibrationIconLed();
@@ -511,8 +501,7 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Show notification that times out after 3 seconds',
+        buttonText: 'Show notification that times out after 3 seconds',
         onPressed: () async {
           await _showTimeoutNotification();
         },
@@ -524,31 +513,27 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Show big picture notification using local images',
+        buttonText: 'Show big picture notification using local images',
         onPressed: () async {
           await _showBigPictureNotification();
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Show big picture notification using base64 String '
+        buttonText: 'Show big picture notification using base64 String '
             'for images',
         onPressed: () async {
           await _showBigPictureNotificationBase64();
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Show big picture notification using URLs for '
+        buttonText: 'Show big picture notification using URLs for '
             'Images',
         onPressed: () async {
           await _showBigPictureNotificationURL();
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Show big picture notification, hide large icon '
+        buttonText: 'Show big picture notification, hide large icon '
             'on expand',
         onPressed: () async {
           await _showBigPictureNotificationHiddenLargeIcon();
@@ -603,15 +588,13 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Show notification with no badge, alert only once',
+        buttonText: 'Show notification with no badge, alert only once',
         onPressed: () async {
           await _showNotificationWithNoBadge();
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Show progress notification - updates every second',
+        buttonText: 'Show progress notification - updates every second',
         onPressed: () async {
           await _showProgressNotification();
         },
@@ -653,8 +636,7 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Show notification with number if the launcher '
+        buttonText: 'Show notification with number if the launcher '
             'supports',
         onPressed: () async {
           await _showNotificationWithNumber();
@@ -704,8 +686,7 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Start foreground service with blue background '
+        buttonText: 'Start foreground service with blue background '
             'notification',
         onPressed: () async {
           await _startForegroundServiceWithBlueBackgroundNotification();
@@ -721,7 +702,7 @@ class _HomePageState extends State<HomePage> {
     return buttons;
   }
 
-  List<Widget> linuxButtons(){
+  List<Widget> linuxButtons() {
     final List<Widget> buttons = <Widget>[
       const Text(
         'Linux-specific examples',
@@ -903,8 +884,8 @@ class _HomePageState extends State<HomePage> {
     ];
     return buttons;
   }
-  
-  List<Widget> iosButtons(){
+
+  List<Widget> iosButtons() {
     final List<Widget> buttons = <Widget>[
       PaddedElevatedButton(
         buttonText: 'Request permission',
@@ -923,24 +904,19 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Show notification with attachment (with thumbnail)',
+        buttonText: 'Show notification with attachment (with thumbnail)',
         onPressed: () async {
-          await _showNotificationWithAttachment(
-              hideThumbnail: false);
+          await _showNotificationWithAttachment(hideThumbnail: false);
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Show notification with attachment (no thumbnail)',
+        buttonText: 'Show notification with attachment (no thumbnail)',
         onPressed: () async {
-          await _showNotificationWithAttachment(
-              hideThumbnail: true);
+          await _showNotificationWithAttachment(hideThumbnail: true);
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Show notification with attachment (clipped thumbnail)',
+        buttonText: 'Show notification with attachment (clipped thumbnail)',
         onPressed: () async {
           await _showNotificationWithClippedThumbnailAttachment();
         },
@@ -952,8 +928,7 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Show notification with time sensitive interruption '
+        buttonText: 'Show notification with time sensitive interruption '
             'level',
         onPressed: () async {
           await _showNotificationWithTimeSensitiveInterruptionLevel();
@@ -967,8 +942,7 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Show notification in notification centre only',
+        buttonText: 'Show notification in notification centre only',
         onPressed: () async {
           await _showNotificationInNotificationCentreOnly();
         },
@@ -976,20 +950,18 @@ class _HomePageState extends State<HomePage> {
     ];
     return buttons;
   }
-  
-  List<Widget> nonLinuxButtons(){
+
+  List<Widget> nonLinuxButtons() {
     final List<Widget> list = <Widget>[
       PaddedElevatedButton(
-        buttonText:
-            'Schedule notification to appear in 5 seconds '
+        buttonText: 'Schedule notification to appear in 5 seconds '
             'based on local time zone',
         onPressed: () async {
           await _zonedScheduleNotification();
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Schedule notification to appear in 5 seconds '
+        buttonText: 'Schedule notification to appear in 5 seconds '
             'based on local time zone using alarm clock',
         onPressed: () async {
           await _zonedScheduleAlarmClockNotification();
@@ -1002,32 +974,28 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Schedule daily 10:00:00 am notification in your '
+        buttonText: 'Schedule daily 10:00:00 am notification in your '
             'local time zone',
         onPressed: () async {
           await _scheduleDailyTenAMNotification();
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Schedule daily 10:00:00 am notification in your '
+        buttonText: 'Schedule daily 10:00:00 am notification in your '
             "local time zone using last year's date",
         onPressed: () async {
           await _scheduleDailyTenAMLastYearNotification();
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Schedule weekly 10:00:00 am notification in your '
+        buttonText: 'Schedule weekly 10:00:00 am notification in your '
             'local time zone',
         onPressed: () async {
           await _scheduleWeeklyTenAMNotification();
         },
       ),
       PaddedElevatedButton(
-        buttonText:
-            'Schedule weekly Monday 10:00:00 am notification '
+        buttonText: 'Schedule weekly Monday 10:00:00 am notification '
             'in your local time zone',
         onPressed: () async {
           await _scheduleWeeklyMondayTenAMNotification();
@@ -1051,68 +1019,67 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-    appBar: AppBar(
-      title: const Text('Plugin example app'),
-    ),
-    body: SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(8),
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              ...commonWidgets(),
-              if (kIsWeb || !Platform.isLinux) ...nonLinuxButtons(),
-              ...commonWidgets2(),
-              const Divider(),
-              const Text(
-                'Notifications with actions',
-                style: TextStyle(fontWeight: FontWeight.bold),
+        appBar: AppBar(
+          title: const Text('Plugin example app'),
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Center(
+              child: Column(
+                children: <Widget>[
+                  ...commonWidgets(),
+                  if (kIsWeb || !Platform.isLinux) ...nonLinuxButtons(),
+                  ...commonWidgets2(),
+                  const Divider(),
+                  const Text(
+                    'Notifications with actions',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  PaddedElevatedButton(
+                    buttonText: 'Show notification with plain actions',
+                    onPressed: () async {
+                      await _showNotificationWithActions();
+                    },
+                  ),
+                  if (Platform.isLinux)
+                    PaddedElevatedButton(
+                      buttonText:
+                          'Show notification with icon action (if supported)',
+                      onPressed: () async {
+                        await _showNotificationWithIconAction();
+                      },
+                    ),
+                  if (!Platform.isLinux)
+                    PaddedElevatedButton(
+                      buttonText: 'Show notification with text action',
+                      onPressed: () async {
+                        await _showNotificationWithTextAction();
+                      },
+                    ),
+                  PaddedElevatedButton(
+                    buttonText: 'Show notification with text choice',
+                    onPressed: () async {
+                      await _showNotificationWithTextChoice();
+                    },
+                  ),
+                  const Divider(),
+                  if (Platform.isAndroid) ...androidButtons(),
+                  if (!kIsWeb &&
+                      (Platform.isIOS || Platform.isMacOS)) ...<Widget>[
+                    const Text(
+                      'iOS and macOS-specific examples',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    ...iosButtons()
+                  ],
+                  if (!kIsWeb && Platform.isLinux) ...linuxButtons(),
+                ],
               ),
-              PaddedElevatedButton(
-                buttonText: 'Show notification with plain actions',
-                onPressed: () async {
-                  await _showNotificationWithActions();
-                },
-              ),
-              if (Platform.isLinux)
-                PaddedElevatedButton(
-                  buttonText:
-                      'Show notification with icon action (if supported)',
-                  onPressed: () async {
-                    await _showNotificationWithIconAction();
-                  },
-                ),
-              
-              if (!Platform.isLinux)
-                PaddedElevatedButton(
-                  buttonText: 'Show notification with text action',
-                  onPressed: () async {
-                    await _showNotificationWithTextAction();
-                  },
-                ),
-                PaddedElevatedButton(
-                  buttonText: 'Show notification with text choice',
-                  onPressed: () async {
-                    await _showNotificationWithTextChoice();
-                  },
-                ),
-              const Divider(),
-              if (Platform.isAndroid) ...androidButtons(),
-              if (!kIsWeb &&
-                  (Platform.isIOS || Platform.isMacOS)) ...<Widget>[
-                const Text(
-                  'iOS and macOS-specific examples',
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                ...iosButtons()
-              ],
-              if (!kIsWeb && Platform.isLinux) ...linuxButtons(),
-            ],
+            ),
           ),
         ),
-      ),
-    ),
-  );
+      );
 
   Future<void> _showNotification() async {
     const AndroidNotificationDetails androidNotificationDetails =
@@ -2599,7 +2566,8 @@ class _HomePageState extends State<HomePage> {
           if (activeNotifications!.isEmpty)
             const Text('No active notifications'),
           if (activeNotifications.isNotEmpty)
-            for (final ActiveNotification activeNotification in activeNotifications)
+            for (final ActiveNotification activeNotification
+                in activeNotifications)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -2839,7 +2807,8 @@ class _HomePageState extends State<HomePage> {
 }
 
 Future<LinuxServerCapabilities> getLinuxCapabilities() =>
-    flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
+    flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
             LinuxFlutterLocalNotificationsPlugin>()!
         .getCapabilities();
 
@@ -2887,4 +2856,3 @@ class SecondPageState extends State<SecondPage> {
         ),
       );
 }
-

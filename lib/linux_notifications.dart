@@ -221,4 +221,3 @@ Future<int> doShowLinuxNotificationDifferentLocation(int id) async {
   );
   return id;
 }
-

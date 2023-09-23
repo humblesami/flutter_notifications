@@ -18,21 +18,21 @@ class InfoValueString extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
-    child: Text.rich(
-      TextSpan(
-        children: <InlineSpan>[
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+        child: Text.rich(
           TextSpan(
-            text: '$title ',
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
+            children: <InlineSpan>[
+              TextSpan(
+                text: '$title ',
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              TextSpan(
+                text: '$value',
+              )
+            ],
           ),
-          TextSpan(
-            text: '$value',
-          )
-        ],
-      ),
-    ),
-  );
+        ),
+      );
 }
