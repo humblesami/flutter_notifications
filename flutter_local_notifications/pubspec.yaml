@@ -10,8 +10,10 @@ dependencies:
   clock: ^1.1.0
   flutter:
     sdk: flutter
-  flutter_local_notifications_linux: ^4.0.0
-  local_notifications_interface: ^7.0.0
+  flutter_local_notifications_linux:
+    path: ../flutter_local_notifications_linux
+  local_notifications_interface:
+    path: ../local_notifications_interface
   timezone: ^0.9.0
 
 dev_dependencies:
